@@ -11,5 +11,10 @@ To run the installation, execute as root:
 ```bash
 chmod +x bootstrap-k8s.sh
 ./bootstrap-k8s.sh
+```
 
 2. Cluster Node Status (kubectl get nodes)
+```
+NAME              STATUS   ROLES           AGE   VERSION   INTERNAL-IP    EXTERNAL-IP
+ip-172-31-0-100   Ready    control-plane   5m    v1.30.0   172.31.0-100   <none>
+```
