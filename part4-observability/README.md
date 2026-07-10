@@ -10,6 +10,46 @@ Access is strictly restricted to the administrator's public IP (`My ip`) on the 
 * **Grafana Dashboard:** Port `32000`
 * **Alertmanager Dashboard:** Port `32001`
 
+### new changes to the ingress:
+```
+resource "aws_security_group" "k8s" {
+  name        = "k8s-sg"
+  description = "Security group for Kubernetes node"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "SSH access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  ingress {
+    description = "Grafana NodePort"
+    from_port   = 32000
+    to_port     = 32000
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  ingress {
+    description = "Alertmanager NodePort"
+    from_port   = 32001
+    to_port     = 32001
+    protocol    = "tcp"
+    cidr_blocks = [var.my_ip]
+  }
+
+  egress {
+    description = "Allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+```
 ---
 
 ## Deployment
