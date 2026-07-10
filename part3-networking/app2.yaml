@@ -23,44 +23,79 @@ kind: Deployment
 metadata:
   name: app2-nginx
   namespace: app2
+
 spec:
   replicas: 1
+
   selector:
-    matchLabels: { app: app2-nginx }
+    matchLabels:
+      app: app2-nginx
+
   template:
     metadata:
-      labels: { app: app2-nginx }
+      labels:
+        app: app2-nginx
+
     spec:
       serviceAccountName: app2-sa
+
       containers:
         - name: nginx
           image: nginx:1.27-alpine
-          ports: [{ containerPort: 80 }]
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
           volumeMounts:
             - name: html
               mountPath: /usr/share/nginx/html
+
       volumes:
         - name: html
-          configMap: { name: app2-index }
+          configMap:
+            name: app2-index
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: app2-svc
   namespace: app2
+
 spec:
-  selector: { app: app2-nginx }
-  ports: [{ port: 80, targetPort: 80 }]
+  selector:
+    app: app2-nginx
+
+  ports:
+    - port: 80
+      targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-intra-namespace-app2
   namespace: app2
+
 spec:
   podSelector: {}
+
   policyTypes:
-  - Ingress
+    - Ingress
+
   ingress:
-  - from:
-    - podSelector: {}
+    - from:
+        - podSelector: {}
