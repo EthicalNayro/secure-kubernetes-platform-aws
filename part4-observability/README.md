@@ -131,4 +131,6 @@ Once the firing state was verified and captured, the synthetic load was safely t
 ```bash
 # Terminate the stress processes
 pkill yes
+[2]   Terminated              yes > /dev/null
+[3]-  Terminated              yes > /dev/null
 ```
