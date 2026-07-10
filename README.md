@@ -48,4 +48,4 @@ Phase 4 implements a custom PrometheusRule (**NodeHighCPUUsage**) that triggers 
 
 ---
 
-> **Note:** Each directory contains a dedicated README file with detailed instructions, execution commands, and supplementary verification outputs.
+> **Note:** Each directory contains a dedicated README file with detailed instructions, execution commands, and verification outputs.
