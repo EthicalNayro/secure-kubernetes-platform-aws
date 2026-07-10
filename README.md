@@ -39,7 +39,7 @@ Phase 4 implements a custom PrometheusRule (**NodeHighCPUUsage**) that triggers 
 
 ### Verification
 * **Grafana Alert Status:** ![Grafana Alert Firing](part4-observability/images/grafana-CPU-alert.png)
-* 
+
 * **Alertmanager Routing:** ![Alertmanager UI](part4-observability/images/Altermanager-main.png)
 
 ---
