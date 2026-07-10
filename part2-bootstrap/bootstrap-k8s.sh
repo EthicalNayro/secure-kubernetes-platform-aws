@@ -40,6 +40,9 @@ containerd config default > /etc/containerd/config.toml
 # Use systemd as cgroup driver (recommended for Kubernetes)
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
 
+# Fix Pause/Sandbox image version for Kubernetes 1.30+ on Amazon Linux 2023
+sed -i 's/registry.k8s.io\/pause:3.8/registry.k8s.io\/pause:3.9/g' /etc/containerd/config.toml
+
 systemctl enable --now containerd
 
 
@@ -77,26 +80,18 @@ export KUBECONFIG=/root/.kube/config
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
 
-# --- Step 3: Install Calico using Helm ---
+# --- Step 3: Install Calico CNI ---
 
-# Install Helm CLI
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+# Install Calico Operator
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/tigera-operator.yaml
 
-# Deploy Calico CNI
-helm repo add projectcalico https://docs.tigera.io/calico/charts
-helm repo update
+# Wait briefly for CRDs to settle before applying custom resources
+sleep 10
 
-helm install calico projectcalico/tigera-operator \
-  --namespace tigera-operator \
-  --create-namespace
+# Configure Calico Custom Resources
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/custom-resources.yaml
 
-# Verify installation
-kubectl wait \
-  --for=condition=Ready pods \
-  --all \
-  -n calico-system \
-  --timeout=300s || true
-
+# Verify final cluster status
 kubectl get nodes -o wide
 kubectl get pods -A
 ```
