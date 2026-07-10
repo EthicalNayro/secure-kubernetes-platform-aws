@@ -58,9 +58,9 @@ additionalPrometheusRulesMap:
 ### 1. Accessing the Dashboards
 With the Security Group rules applied, both dashboards are securely accessible from the allowed IP via the EC2 Public IP:
 
-Grafana: http://<EC2_PUBLIC_IP>:32000
+Grafana: http://18.197.168.228:32000
 
-Alertmanager: http://<EC2_PUBLIC_IP>:32001
+Alertmanager: http://18.197.168.228:32001
 
 ### 2. Triggering High CPU Load
 To trigger the custom alert condition, a CPU stress load was generated directly on the EC2 node.
