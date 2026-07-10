@@ -1,6 +1,11 @@
 # Part 4: Observability Stack (Prometheus & Grafana)
 
-This component deploys the Prometheus and Grafana monitoring stack via Helm to monitor the single-node Kubernetes cluster, configures a custom high CPU alert, and exposes the dashboards securely.
+📋 Design Explanation
+We deployed the production-grade kube-prometheus-stack via Helm to monitor cluster-wide metrics.
+
+Security & Isolation: The stack was deployed in a dedicated monitoring namespace. Access to Grafana and Alertmanager is restricted at the AWS infrastructure level using EC2 Security Groups, limiting traffic exclusively to the administrator's IP address.
+
+Alerting: A custom native PrometheusRule (NodeHighCPUUsage) was injected via Helm values to fire when any node's CPU usage exceeds 50% for more than 1 minute.
 
 ## Infrastructure & Security Group Configuration
 
@@ -106,9 +111,24 @@ Alertmanager: http://18.197.168.228:32001
 ### 2. Triggering High CPU Load
 To trigger the custom alert condition, a CPU stress load was generated directly on the EC2 node.
 
+```bash
+# Generate synthetic CPU stress in the background
+yes > /dev/null &
+yes > /dev/null &
+```
 ### 3. Alert Evidence (Firing)
-Alertmanager Proof
+Grafana Alerting Dashboard Proof
+After the high CPU condition sustained for over 1 minute, the rule successfully transitioned into Firing status, indicating that Prometheus scraped the metric and Grafana evaluated the rule correctly:
+
 [ INSERT ALERTMANAGER SCREENSHOT OR CLI PROOF HERE ]
 
-Grafana Alerting Dashboard Proof
-[ INSERT GRAFANA SCREENSHOT HERE ]
+Alertmanager UI Proof
+The alert was successfully routed to the Alertmanager cluster component on port 32001 for notification management:
+[ INSERT ALERTMANAGER SCREENSHOT OR CLI PROOF HERE ]
+
+### 4. Post-Verification Teardown
+Once the firing state was verified and captured, the synthetic load was safely terminated to bring the EC2 node back to normal baseline operations:
+```bash
+# Terminate the stress processes
+pkill yes
+```
