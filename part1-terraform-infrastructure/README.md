@@ -26,6 +26,6 @@ Security & Ingress Restriction: * SSH (Port 22): Locked down strictly to the adm
 
 Egress: Full outbound traffic is permitted to enable the node to fetch container images, package updates, and communicate with external registries seamlessly during bootstrapping.
 
-Operating System & Performance: Leverages the latest native Amazon Linux 2023 AMI optimized for AWS ecosystems, running on a stable t3.large (2 vCPUs, 8 GiB RAM) compute profile to comfortably satisfy core kubeadm scheduling and control-plane memory baselines.
+Operating System & Performance: Leverages the latest native Amazon Linux 2023 AMI optimized for AWS ecosystems, running on a stable t3.large profile to comfortably satisfy core kubeadm scheduling and control-plane memory baselines.
 
 Privileged Identity Integration: An aws_iam_instance_profile wrapper was built dynamically to automatically bind the pre-existing, pre-authorized Moveo-EC2Role to the EC2 instance without hardcoding active long-term credentials.
