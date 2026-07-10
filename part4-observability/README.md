@@ -124,6 +124,7 @@ After the high CPU condition sustained for over 1 minute, the rule successfully 
 
 ### Alertmanager UI Proof
 The alert was successfully routed to the Alertmanager cluster component on port 32001 for notification management:
+
 ![Alertmanager](Altermanager-main.png)
 
 ### 4. Post-Verification Teardown
