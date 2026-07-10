@@ -38,11 +38,11 @@ Phase 4 implements a custom PrometheusRule (**NodeHighCPUUsage**) that triggers 
 * **Alertmanager:** Exposed via NodePort `32001` (restricted to authorized IP).
 
 ### Verification
-* ### **Grafana Alert Status:**
+### **Grafana Alert Status:**
 
 ![Grafana Alert Firing](part4-observability/images/grafana-CPU-alert.png)
 
-* ### **Alertmanager Routing:**
+### **Alertmanager Routing:**
 
 ![Alertmanager UI](part4-observability/images/Altermanager-main.png)
 
