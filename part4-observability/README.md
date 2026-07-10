@@ -117,7 +117,7 @@ yes > /dev/null &
 yes > /dev/null &
 ```
 
-![TOP-LOAD](images/top-applying stress.png)
+![TOP-LOAD](images/top-applying-stress.png)
 
 ### 3. Alert Evidence (Firing)
 ### Grafana Alerting Dashboard Proof
