@@ -34,6 +34,11 @@ grafana:
     type: NodePort
     nodePort: 32000
 
+alertmanager:
+  service:
+    type: NodePort
+    nodePort: 32001
+
 additionalPrometheusRulesMap:
   custom-node-alerts:
     groups:
@@ -50,8 +55,12 @@ additionalPrometheusRulesMap:
 ```
 
 ## Validation & Alerts Verification
-### 1. Accessing Grafana
-Grafana is exposed on NodePort 32000. Access was restricted to the administrator's public IP inside the EC2 Security Group.
+### 1. Accessing the Dashboards
+With the Security Group rules applied, both dashboards are securely accessible from the allowed IP via the EC2 Public IP:
+
+Grafana: http://<EC2_PUBLIC_IP>:32000
+
+Alertmanager: http://<EC2_PUBLIC_IP>:32001
 
 ### 2. Triggering High CPU Load
 To trigger the custom alert condition, a CPU stress load was generated directly on the EC2 node.
