@@ -116,11 +116,16 @@ To trigger the custom alert condition, a CPU stress load was generated directly 
 yes > /dev/null &
 yes > /dev/null &
 ```
+
+![TOP-LOAD](images/top-applying-stress.png)
+
 ### 3. Alert Evidence (Firing)
 ### Grafana Alerting Dashboard Proof
 After the high CPU condition sustained for over 1 minute, the rule successfully transitioned into Firing status, indicating that Prometheus scraped the metric and Grafana evaluated the rule correctly:
 
 ![Grafana-login](images/grafana-access.png)
+
+![Grafana-CPU-ALERT](images/grafana-CPU-alert.png)
 
 ### Alertmanager UI Proof
 The alert was successfully routed to the Alertmanager cluster component on port 32001 for notification management:
