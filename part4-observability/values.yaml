@@ -1,1 +1,18 @@
+grafana:
+  service:
+    type: NodePort
+    nodePort: 32000
 
+additionalPrometheusRulesMap:
+  custom-node-alerts:
+    groups:
+      - name: node-cpu-alert-group
+        rules:
+          - alert: NodeHighCPUUsage
+            expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 50
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High CPU usage detected on node {{ $labels.instance }}"
+              description: "CPU usage has been above 50% for more than 1 minute."
