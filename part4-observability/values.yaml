@@ -3,6 +3,11 @@ grafana:
     type: NodePort
     nodePort: 32000
 
+alertmanager:
+  service:
+    type: NodePort
+    nodePort: 32001
+
 additionalPrometheusRulesMap:
   custom-node-alerts:
     groups:
