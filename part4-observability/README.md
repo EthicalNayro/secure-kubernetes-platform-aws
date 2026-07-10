@@ -117,7 +117,7 @@ yes > /dev/null &
 yes > /dev/null &
 ```
 ### 3. Alert Evidence (Firing)
-Grafana Alerting Dashboard Proof
+Grafana Alerting Dashboard Proof:
 After the high CPU condition sustained for over 1 minute, the rule successfully transitioned into Firing status, indicating that Prometheus scraped the metric and Grafana evaluated the rule correctly:
 
 [ INSERT ALERTMANAGER SCREENSHOT OR CLI PROOF HERE ]
