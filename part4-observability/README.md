@@ -140,3 +140,4 @@ pkill yes
 [2]   Terminated              yes > /dev/null
 [3]-  Terminated              yes > /dev/null
 ```
+![Grafana-CPU-FIX](images/grafana-CPU-fixed.png)
