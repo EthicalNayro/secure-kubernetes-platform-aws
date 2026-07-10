@@ -30,6 +30,8 @@ Operating System & Performance: Leverages the latest native Amazon Linux 2023 AM
 
 Privileged Identity Integration: An aws_iam_instance_profile wrapper was built dynamically to automatically bind the pre-existing, pre-authorized Moveo-EC2Role to the EC2 instance without hardcoding active long-term credentials.
 
+## Terraform apply output
+
 ```text
 module.vpc.aws_vpc.main: Creating...
 module.vpc.aws_vpc.main: Creation complete after 2s [id=vpc-0ede8b73b865cc1ab]
