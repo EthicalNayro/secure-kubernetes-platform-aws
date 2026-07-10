@@ -1,14 +1,17 @@
+# 1. Namespace
 apiVersion: v1
 kind: Namespace
 metadata:
   name: app1
 ---
+# 2. ServiceAccount
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: app1-sa
   namespace: app1
 ---
+# 3. ConfigMap
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -18,49 +21,87 @@ data:
   index.html: |
     <h1>Hello from APP1</h1>
 ---
+# 4. Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: app1-nginx
   namespace: app1
+
 spec:
   replicas: 1
+
   selector:
-    matchLabels: { app: app1-nginx }
+    matchLabels:
+      app: app1-nginx
+
   template:
     metadata:
-      labels: { app: app1-nginx }
+      labels:
+        app: app1-nginx
+
     spec:
       serviceAccountName: app1-sa
+
       containers:
         - name: nginx
           image: nginx:1.27-alpine
-          ports: [{ containerPort: 80 }]
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
           volumeMounts:
             - name: html
               mountPath: /usr/share/nginx/html
+
       volumes:
         - name: html
-          configMap: { name: app1-index }
+          configMap:
+            name: app1-index
 ---
+# 5. Service
 apiVersion: v1
 kind: Service
 metadata:
   name: app1-svc
   namespace: app1
+
 spec:
-  selector: { app: app1-nginx }
-  ports: [{ port: 80, targetPort: 80 }]
+  selector:
+    app: app1-nginx
+
+  ports:
+    - port: 80
+      targetPort: 80
 ---
+# 6. NetworkPolicy
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-intra-namespace-app1
   namespace: app1
+
 spec:
   podSelector: {}
+
   policyTypes:
-  - Ingress
+    - Ingress
+
   ingress:
-  - from:
-    - podSelector: {}
+    - from:
+        - podSelector: {}
