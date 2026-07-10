@@ -50,6 +50,7 @@ resource "aws_security_group" "k8s" {
   }
 }
 ```
+### Then Terraform Apply
 ---
 
 ## Deployment
