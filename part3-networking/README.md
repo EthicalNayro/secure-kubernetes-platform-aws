@@ -38,7 +38,7 @@ Result: Communication within the namespace is allowed.
 Testing communication between different namespaces:
 
 ```bash
-kubectl exec -n app2 deploy/app2-nginx -- curl -s --max-time 5 http://app1-svc.app1.svc.cluster.local
+kubectl exec -n app2 deploy/app2-nginx -- curl -s --max-time 5 [http://app1-svc.app1.svc.cluster.local](http://app1-svc.app1.svc.cluster.local)
 ```
 
 Expected output:
