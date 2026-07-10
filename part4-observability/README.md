@@ -124,7 +124,7 @@ After the high CPU condition sustained for over 1 minute, the rule successfully 
 
 ### Alertmanager UI Proof
 The alert was successfully routed to the Alertmanager cluster component on port 32001 for notification management:
-[ INSERT ALERTMANAGER SCREENSHOT OR CLI PROOF HERE ]
+(Altermanager-main.png)
 
 ### 4. Post-Verification Teardown
 Once the firing state was verified and captured, the synthetic load was safely terminated to bring the EC2 node back to normal baseline operations:
