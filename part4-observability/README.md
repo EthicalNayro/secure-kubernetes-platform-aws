@@ -40,13 +40,13 @@ additionalPrometheusRulesMap:
 ```
 
 ## Validation & Alerts Verification
-# 1. Accessing Grafana
+### 1. Accessing Grafana
 Grafana is exposed on NodePort 32000. Access was restricted to the administrator's public IP inside the EC2 Security Group.
 
-# 2. Triggering High CPU Load
+### 2. Triggering High CPU Load
 To trigger the custom alert condition, a CPU stress load was generated directly on the EC2 node.
 
-# 3. Alert Evidence (Firing)
+### 3. Alert Evidence (Firing)
 Alertmanager Proof
 [ INSERT ALERTMANAGER SCREENSHOT OR CLI PROOF HERE ]
 
