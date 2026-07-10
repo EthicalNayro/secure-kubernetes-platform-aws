@@ -8,7 +8,7 @@ This component provisions a lightweight, highly secure cloud infrastructure on A
 The infrastructure is designed using a clean, modular layout to ensure maintainability and reusability:
 
 ```text
-part1-terraform/
+part1-terraform-infrastructure/
 ├── main.tf                 # Root configuration calling the infrastructure modules
 ├── variables.tf            # Global input variables (e.g., Region, IP ranges)
 ├── outputs.tf              # Root outputs exposing infrastructure metadata
