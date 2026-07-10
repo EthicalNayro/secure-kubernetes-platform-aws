@@ -55,8 +55,8 @@ Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 
 Outputs:
 
-ec2_instance_id = "i-0745b38d03c375355"
-ec2_public_ip = "3.72.35.241"
+ec2_instance_id = "i-0ef95460a489ea144"
+ec2_public_ip = "18.197.168.228"
 public_subnet_id = "subnet-051305dfb7a74ff95"
 vpc_id = "vpc-0ede8b73b865cc1ab"
 ```
