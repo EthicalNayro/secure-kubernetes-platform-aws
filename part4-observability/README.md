@@ -1,6 +1,16 @@
 # Part 4: Observability Stack (Prometheus & Grafana)
 
-This component deploys the Prometheus and Grafana monitoring stack via Helm to monitor the single-node Kubernetes cluster, configures a custom high CPU alert, and exposes Grafana via NodePort.
+This component deploys the Prometheus and Grafana monitoring stack via Helm to monitor the single-node Kubernetes cluster, configures a custom high CPU alert, and exposes the dashboards securely.
+
+## Infrastructure & Security Group Configuration
+
+Before deploying the monitoring stack, the AWS Security Group ingress rules were updated via Terraform to allow secure external access to the monitoring UIs. The infrastructure changes were applied **in-place** without interrupting or recreating the existing EC2 node.
+
+Access is strictly restricted to the administrator's public IP (`79.177.155.192/32`) on the following custom NodePorts:
+* **Grafana Dashboard:** Port `32000`
+* **Alertmanager Dashboard:** Port `32001`
+
+---
 
 ## Deployment
 
