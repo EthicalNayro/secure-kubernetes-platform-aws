@@ -9,11 +9,11 @@ set -euxo pipefail
 dnf update -y
 dnf install -y wget git vim
 
-# Disable swap
+# Disable swap and keep it disabled during boot
 swapoff -a
 sed -i '/ swap / s/^/#/' /etc/fstab
 
-# Load kernel modules
+# Load kernel modules (For the containerd to work correctly)
 cat <<'EOF' > /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
