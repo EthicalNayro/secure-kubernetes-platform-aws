@@ -46,4 +46,4 @@ To resolve this, the taint was explicitly removed during bootstrapping using:
 ```bash
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 ```
-The trailing minus (-) instructs Kubernetes to remove the restriction, allowing the Control Plane node to act as a worker node and execute workloads successfully.
+## Removing the taint allows the scheduler to place workloads on the Control Plane node, effectively allowing it to serve both as a control-plane and workload node.
