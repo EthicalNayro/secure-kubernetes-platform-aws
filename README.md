@@ -94,7 +94,13 @@ The workflow in `.github/workflows/validate.yml` checks:
 - Shell syntax and ShellCheck results for the bootstrap script
 - YAML syntax for Kubernetes and Helm values files
 
-Runtime evidence, including Grafana and Alertmanager screenshots, is available under `part4-observability/images/`.
+Runtime evidence is documented alongside the relevant deployment and verification steps in [Part 4: Observability and Alerting](part4-observability/README.md).
+
+### Monitoring and alerting evidence
+
+![NodeHighCPUUsage alert firing in Grafana](part4-observability/images/grafana-CPU-alert.png)
+
+![NodeHighCPUUsage alert routed to Alertmanager](part4-observability/images/Altermanager-main.png)
 
 ## Production considerations
 
