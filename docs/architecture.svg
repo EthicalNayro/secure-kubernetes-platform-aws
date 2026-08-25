@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Secure Kubernetes Platform on AWS architecture</title>
+  <desc id="desc">Terraform provisions an AWS VPC, public subnet, security group, and a hardened EC2 instance running a single-node Kubernetes cluster with Calico namespace isolation and Prometheus, Grafana, and Alertmanager observability.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.55" stop-color="#0a1830"/>
+      <stop offset="1" stop-color="#071421"/>
+    </linearGradient>
+    <linearGradient id="awsPanel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#12243c" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#0c1c31" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="k8sPanel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#132d53"/>
+      <stop offset="1" stop-color="#102541"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#73a7d8" stroke-opacity="0.055" stroke-width="1"/>
+    </pattern>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#5db6ff"/>
+    </marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#ffad3d"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#37d39b"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="1450" cy="40" r="300" fill="#2d7ff9" opacity="0.07"/>
+  <circle cx="120" cy="820" r="260" fill="#7a5cff" opacity="0.06"/>
+
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="60" y="68" fill="#f5f9ff" font-size="34" font-weight="750">Secure Kubernetes Platform on AWS</text>
+    <text x="60" y="104" fill="#91a8c4" font-size="17">Single-node portfolio lab · Infrastructure as Code · Network isolation · Observability</text>
+
+    <g transform="translate(1125 45)">
+      <rect width="118" height="38" rx="19" fill="#7b5cff" opacity="0.16" stroke="#9a83ff" stroke-opacity="0.45"/>
+      <g transform="translate(15 10)" fill="#8f72ff">
+        <path d="M0 0h9v9H0zM11 0h9v9h-9zM11 11h9v9h-9z"/>
+      </g>
+      <text x="46" y="25" fill="#d6ceff" font-size="14" font-weight="650">Terraform</text>
+    </g>
+    <g transform="translate(1255 45)">
+      <rect width="94" height="38" rx="19" fill="#ff9900" opacity="0.13" stroke="#ffad3d" stroke-opacity="0.45"/>
+      <text x="17" y="25" fill="#ffffff" font-size="16" font-weight="750">AWS</text>
+      <path d="M16 28c17 8 35 8 53 0" fill="none" stroke="#ffad3d" stroke-width="2" stroke-linecap="round"/>
+    </g>
+    <g transform="translate(1361 45)">
+      <rect width="120" height="38" rx="19" fill="#326ce5" opacity="0.14" stroke="#5d93ff" stroke-opacity="0.5"/>
+      <circle cx="21" cy="19" r="10" fill="none" stroke="#6fa0ff" stroke-width="2"/>
+      <circle cx="21" cy="19" r="3" fill="#6fa0ff"/>
+      <path d="M21 9v5M21 24v5M11 19h5M26 19h5M14 12l4 4M24 22l4 4M28 12l-4 4M18 22l-4 4" stroke="#6fa0ff" stroke-width="1.5"/>
+      <text x="41" y="25" fill="#cfe0ff" font-size="14" font-weight="650">Kubernetes</text>
+    </g>
+
+    <text x="60" y="170" fill="#6f89a8" font-size="13" font-weight="700" letter-spacing="1.8">DELIVERY &amp; ACCESS</text>
+
+    <g>
+      <rect x="60" y="195" width="330" height="116" rx="18" fill="#0f2037" stroke="#284463"/>
+      <circle cx="96" cy="233" r="18" fill="#2f81f7" opacity="0.18"/>
+      <path d="M89 224l14 9-14 9z" fill="#66b5ff"/>
+      <text x="126" y="231" fill="#f2f7ff" font-size="18" font-weight="700">GitHub Actions</text>
+      <text x="126" y="255" fill="#8fa7c2" font-size="14">Validate on pull requests and main</text>
+      <rect x="84" y="272" width="112" height="24" rx="12" fill="#173d32"/>
+      <circle cx="98" cy="284" r="4" fill="#37d39b"/>
+      <text x="109" y="289" fill="#a9f0d6" font-size="12" font-weight="650">CI passing</text>
+    </g>
+
+    <path d="M225 311V340" fill="none" stroke="#5db6ff" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+
+    <g>
+      <rect x="60" y="350" width="330" height="136" rx="18" fill="#171c3c" stroke="#514b87"/>
+      <g transform="translate(86 382)" fill="#8f72ff">
+        <path d="M0 0h15v15H0zM18 0h15v15H18zM18 18h15v15H18z"/>
+      </g>
+      <text x="136" y="391" fill="#f5f2ff" font-size="19" font-weight="700">Terraform</text>
+      <text x="86" y="424" fill="#a7a2cf" font-size="14">Modular infrastructure provisioning</text>
+      <g fill="#d7d4ef" font-size="12">
+        <text x="86" y="452">VPC · Subnet · Routes · Security Group · EC2</text>
+      </g>
+    </g>
+
+    <g>
+      <rect x="60" y="540" width="330" height="158" rx="18" fill="#102238" stroke="#294b67"/>
+      <circle cx="96" cy="578" r="18" fill="#37d39b" opacity="0.14"/>
+      <path d="M96 565c-8 0-13 6-13 13v6h26v-6c0-7-5-13-13-13zm-8 19v13h16v-13" fill="none" stroke="#5de0b2" stroke-width="2"/>
+      <text x="126" y="576" fill="#f0fff9" font-size="18" font-weight="700">Administrator</text>
+      <text x="126" y="600" fill="#8fb7aa" font-size="14">Restricted source CIDR (/32)</text>
+      <g transform="translate(84 628)">
+        <rect width="64" height="28" rx="14" fill="#173346"/><text x="17" y="19" fill="#b8d7ea" font-size="12">SSH 22</text>
+        <rect x="74" width="99" height="28" rx="14" fill="#173346"/><text x="88" y="19" fill="#b8d7ea" font-size="12">Grafana 32000</text>
+        <rect x="183" width="119" height="28" rx="14" fill="#173346"/><text x="197" y="19" fill="#b8d7ea" font-size="12">Alertmanager 32001</text>
+      </g>
+    </g>
+
+    <path d="M390 418C430 418 424 258 468 258" fill="none" stroke="#8f72ff" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <text x="407" y="347" fill="#9c98c9" font-size="12" transform="rotate(-90 407 347)">provisions</text>
+    <path d="M390 620H505" fill="none" stroke="#37d39b" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    <text x="408" y="608" fill="#78cdb0" font-size="12">restricted ingress</text>
+
+    <g>
+      <rect x="450" y="150" width="1090" height="680" rx="26" fill="url(#awsPanel)" stroke="#ffad3d" stroke-opacity="0.58" stroke-width="2"/>
+    </g>
+    <g transform="translate(480 178)">
+      <text x="0" y="23" fill="#ffffff" font-size="22" font-weight="750">AWS VPC</text>
+      <text x="118" y="23" fill="#ffb648" font-size="14" font-weight="650">10.0.0.0/16</text>
+      <g transform="translate(842 0)">
+        <rect width="166" height="34" rx="17" fill="#ff9900" opacity="0.12" stroke="#ffad3d" stroke-opacity="0.38"/>
+        <text x="19" y="22" fill="#ffd391" font-size="13" font-weight="650">Internet Gateway</text>
+      </g>
+    </g>
+
+    <rect x="480" y="225" width="1030" height="570" rx="22" fill="#0c192b" stroke="#3d6b91" stroke-dasharray="8 7"/>
+    <text x="510" y="258" fill="#8fb6d8" font-size="15" font-weight="700">PUBLIC SUBNET · 10.0.1.0/24</text>
+
+    <rect x="510" y="280" width="970" height="480" rx="22" fill="url(#k8sPanel)" stroke="#5d93ff" stroke-opacity="0.7"/>
+    <g transform="translate(540 306)">
+      <rect width="54" height="54" rx="16" fill="#ff9900" opacity="0.14"/>
+      <text x="13" y="34" fill="#ffb648" font-size="19" font-weight="800">EC2</text>
+      <text x="72" y="24" fill="#f3f8ff" font-size="21" font-weight="750">Hardened EC2 instance</text>
+      <text x="72" y="48" fill="#92aaca" font-size="13">Amazon Linux 2023 · t3.large · single-node control plane</text>
+    </g>
+
+    <g>
+      <rect x="540" y="380" width="265" height="300" rx="18" fill="#0d1c30" stroke="#31516f"/>
+      <text x="565" y="415" fill="#6f8eac" font-size="12" font-weight="700" letter-spacing="1.5">PLATFORM LAYER</text>
+
+      <g transform="translate(565 438)">
+        <rect width="215" height="54" rx="13" fill="#132a45"/>
+        <circle cx="28" cy="27" r="14" fill="#326ce5" opacity="0.2"/>
+        <circle cx="28" cy="27" r="8" fill="none" stroke="#6fa0ff" stroke-width="2"/>
+        <text x="54" y="24" fill="#edf4ff" font-size="15" font-weight="700">kubeadm</text>
+        <text x="54" y="41" fill="#88a3c1" font-size="11">Kubernetes v1.30</text>
+      </g>
+      <g transform="translate(565 505)">
+        <rect width="215" height="54" rx="13" fill="#132a45"/>
+        <rect x="15" y="15" width="26" height="24" rx="5" fill="#2e95d3" opacity="0.22"/>
+        <path d="M21 30h14M25 24h6" stroke="#69c2f2" stroke-width="2" stroke-linecap="round"/>
+        <text x="54" y="24" fill="#edf4ff" font-size="15" font-weight="700">containerd</text>
+        <text x="54" y="41" fill="#88a3c1" font-size="11">systemd cgroups</text>
+      </g>
+      <g transform="translate(565 572)">
+        <rect width="215" height="54" rx="13" fill="#132a45"/>
+        <circle cx="28" cy="27" r="14" fill="#f28c28" opacity="0.17"/>
+        <path d="M19 28c5-10 13-10 18 0-5 8-13 8-18 0z" fill="none" stroke="#f5a74e" stroke-width="2"/>
+        <text x="54" y="24" fill="#edf4ff" font-size="15" font-weight="700">Calico CNI</text>
+        <text x="54" y="41" fill="#88a3c1" font-size="11">NetworkPolicy enforcement</text>
+      </g>
+    </g>
+
+    <g>
+      <rect x="835" y="380" width="615" height="196" rx="18" fill="#0d1c30" stroke="#31516f"/>
+      <text x="860" y="415" fill="#6f8eac" font-size="12" font-weight="700" letter-spacing="1.5">ISOLATED WORKLOADS</text>
+
+      <rect x="860" y="438" width="205" height="102" rx="15" fill="#122a3e" stroke="#37d39b" stroke-opacity="0.48"/>
+      <text x="881" y="468" fill="#a8f0d7" font-size="13" font-weight="700">NAMESPACE · APP1</text>
+      <text x="881" y="496" fill="#f2f8ff" font-size="17" font-weight="750">NGINX workload</text>
+      <text x="881" y="520" fill="#85a3bd" font-size="12">Service · ConfigMap · Probes</text>
+
+      <rect x="1220" y="438" width="205" height="102" rx="15" fill="#122a3e" stroke="#37d39b" stroke-opacity="0.48"/>
+      <text x="1241" y="468" fill="#a8f0d7" font-size="13" font-weight="700">NAMESPACE · APP2</text>
+      <text x="1241" y="496" fill="#f2f8ff" font-size="17" font-weight="750">NGINX workload</text>
+      <text x="1241" y="520" fill="#85a3bd" font-size="12">Service · ConfigMap · Probes</text>
+
+      <path d="M1077 489H1208" fill="none" stroke="#f26b78" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <circle cx="1142" cy="489" r="28" fill="#401c2a" stroke="#f26b78"/>
+      <path d="M1132 489l20 0M1142 479v20" stroke="#ff9aa4" stroke-width="3" transform="rotate(45 1142 489)"/>
+      <text x="1081" y="558" fill="#f29aa3" font-size="12" font-weight="650">Cross-namespace ingress denied</text>
+    </g>
+
+    <path d="M805 530H825" stroke="#5d93ff" stroke-width="2.5" marker-end="url(#arrowBlue)"/>
+
+    <g>
+      <rect x="835" y="596" width="615" height="116" rx="18" fill="#0d1c30" stroke="#31516f"/>
+      <text x="860" y="626" fill="#6f8eac" font-size="12" font-weight="700" letter-spacing="1.5">OBSERVABILITY &amp; ALERTING</text>
+
+      <rect x="860" y="642" width="164" height="48" rx="13" fill="#24231e" stroke="#e6522c" stroke-opacity="0.5"/>
+      <circle cx="884" cy="666" r="10" fill="#e6522c"/>
+      <path d="M884 658v9l6 3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      <text x="904" y="671" fill="#ffe0d5" font-size="14" font-weight="700">Prometheus</text>
+
+      <path d="M1024 666H1062" stroke="#ffad3d" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+      <rect x="1070" y="642" width="150" height="48" rx="13" fill="#28251b" stroke="#f2a900" stroke-opacity="0.5"/>
+      <path d="M1090 673c0-10 6-18 15-18 10 0 16 8 16 18" fill="none" stroke="#f2a900" stroke-width="3"/>
+      <text x="1128" y="671" fill="#fff0bd" font-size="14" font-weight="700">Grafana</text>
+
+      <path d="M1220 666H1258" stroke="#ffad3d" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+      <rect x="1266" y="642" width="159" height="48" rx="13" fill="#1c2734" stroke="#5db6ff" stroke-opacity="0.5"/>
+      <path d="M1287 659h14v14h-14zM1290 676h8" fill="none" stroke="#66b5ff" stroke-width="2"/>
+      <text x="1310" y="671" fill="#d9edff" font-size="14" font-weight="700">Alertmanager</text>
+    </g>
+
+    <g transform="translate(540 715)">
+      <rect width="143" height="28" rx="14" fill="#173347"/><circle cx="16" cy="14" r="4" fill="#37d39b"/><text x="28" y="19" fill="#b8d7ea" font-size="12">IMDSv2 required</text>
+      <rect x="153" width="139" height="28" rx="14" fill="#173347"/><circle cx="169" cy="14" r="4" fill="#37d39b"/><text x="181" y="19" fill="#b8d7ea" font-size="12">Encrypted gp3</text>
+      <rect x="302" width="142" height="28" rx="14" fill="#173347"/><circle cx="318" cy="14" r="4" fill="#37d39b"/><text x="330" y="19" fill="#b8d7ea" font-size="12">Restricted ingress</text>
+    </g>
+
+    <text x="60" y="854" fill="#56718f" font-size="12">PORTFOLIO LAB · This design demonstrates production engineering patterns but is intentionally not a highly available production architecture.</text>
+    <text x="1455" y="854" text-anchor="end" fill="#6d87a5" font-size="12" font-weight="650">EthicalNayro</text>
+  </g>
+</svg>

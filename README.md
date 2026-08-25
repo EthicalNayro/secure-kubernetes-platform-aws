@@ -1,19 +1,16 @@
 # Secure Kubernetes Platform on AWS
 
+[![Validate](https://github.com/EthicalNayro/secure-kubernetes-platform-aws/actions/workflows/validate.yml/badge.svg)](https://github.com/EthicalNayro/secure-kubernetes-platform-aws/actions/workflows/validate.yml)
+
 An end-to-end, production-style Kubernetes platform lab deployed on AWS. The project provisions the cloud infrastructure with Terraform, bootstraps Kubernetes with `kubeadm`, enforces workload isolation with Calico NetworkPolicies, and adds monitoring and alerting with the `kube-prometheus-stack` Helm chart.
 
 > This repository intentionally uses a single-node cluster for a reproducible portfolio lab. It demonstrates production engineering patterns, but it is not a highly available production architecture.
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[Administrator CIDR] --> B[AWS Security Group]
-    B --> C[EC2 · Amazon Linux 2023]
-    C --> D[kubeadm · containerd · Calico]
-    D --> E[Isolated application namespaces]
-    D --> F[Prometheus · Grafana · Alertmanager]
-```
+![Secure Kubernetes Platform on AWS architecture](docs/architecture.svg)
+
+The diagram shows the complete lab flow: GitHub Actions validation, modular Terraform provisioning, restricted administrative access, the single-node Kubernetes platform, Calico-enforced namespace isolation, and the Prometheus-to-Alertmanager observability path.
 
 ## What this project demonstrates
 
