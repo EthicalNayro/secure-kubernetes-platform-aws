@@ -1,0 +1,63 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: part1-terraform-infrastructure
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Check formatting
+        run: terraform fmt -check -recursive
+      - name: Initialize without a backend
+        run: terraform init -backend=false
+      - name: Validate configuration
+        run: terraform validate -no-color
+
+  shell:
+    name: Shell
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellCheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Check shell syntax
+        run: bash -n part2-bootstrap/bootstrap-k8s.sh
+      - name: Run ShellCheck
+        run: shellcheck part2-bootstrap/bootstrap-k8s.sh
+
+  yaml:
+    name: YAML
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install YAML parser
+        run: python -m pip install --disable-pip-version-check pyyaml
+      - name: Parse Kubernetes and Helm YAML
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          paths = [
+              Path("part3-networking/app1.yaml"),
+              Path("part3-networking/app2.yaml"),
+              Path("part4-observability/values.yaml"),
+          ]
+
+          for path in paths:
+              with path.open(encoding="utf-8") as stream:
+                  list(yaml.safe_load_all(stream))
+              print(f"Validated {path}")
+          PY

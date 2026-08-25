@@ -1,52 +1,112 @@
-# Home-Task: Automated Kubernetes Infrastructure
+# Secure Kubernetes Platform on AWS
 
-This repository contains the complete implementation of a production-grade, secure, and monitored Kubernetes environment deployed on AWS. The infrastructure is fully automated using Terraform and managed via Helm, covering the full lifecycle from cluster bootstrapping to advanced observability.
+An end-to-end, production-style Kubernetes platform lab deployed on AWS. The project provisions the cloud infrastructure with Terraform, bootstraps Kubernetes with `kubeadm`, enforces workload isolation with Calico NetworkPolicies, and adds monitoring and alerting with the `kube-prometheus-stack` Helm chart.
 
-## Repository Structure
-| Phase | Directory | Description |
-| :--- | :--- | :--- |
-| **01** | `part1-terraform-infrastructure` | Provisioning VPC, EC2 instances, and Security Groups via Terraform. |
-| **02** | `part2-bootstrap` | Kubernetes cluster initialization and base configuration. |
-| **03** | `part3-networking` | Implementing NetworkPolicies for cross-namespace traffic isolation. |
-| **04** | `part4-observability` | Deployment of the monitoring stack (Prometheus + Grafana) with custom alerts. |
+> This repository intentionally uses a single-node cluster for a reproducible portfolio lab. It demonstrates production engineering patterns, but it is not a highly available production architecture.
 
----
+## Architecture
 
-## 🛠️ Tech Stack
-* **Infrastructure:** AWS, Terraform.
-* **Orchestration:** Kubernetes.
-* **Package Management:** Helm Charts.
-* **Observability:** Prometheus, Grafana, Alertmanager.
-* **Security:** NetworkPolicies, AWS EC2 Security Groups.
+```mermaid
+flowchart TD
+    A[Administrator CIDR] --> B[AWS Security Group]
+    B --> C[EC2 · Amazon Linux 2023]
+    C --> D[kubeadm · containerd · Calico]
+    D --> E[Isolated application namespaces]
+    D --> F[Prometheus · Grafana · Alertmanager]
+```
 
----
+## What this project demonstrates
 
-## 🚀 Workflow
-To reproduce the environment, follow these steps:
+- Modular AWS infrastructure provisioning with Terraform
+- Restricted administrative and monitoring access using an administrator `/32` CIDR
+- EC2 hardening with encrypted `gp3` storage and IMDSv2 enforcement
+- Automated Kubernetes and containerd installation on Amazon Linux 2023
+- Calico-based namespace isolation using Kubernetes NetworkPolicies
+- Resource requests, limits, readiness probes, ConfigMaps, Services, and ServiceAccounts
+- Cluster observability with Prometheus, Grafana, Alertmanager, and a custom CPU alert
+- Automated repository validation with GitHub Actions
 
-1. **Infrastructure:** Navigate to `part1-terraform-infrastructure` and run `terraform apply` to provision network and compute resources.
-2. **Cluster:** Perform cluster bootstrapping in `part2-bootstrap`.
-3. **Networking:** Apply the NetworkPolicies in `part3-networking` to enforce traffic security and isolation.
-4. **Monitoring:** Deploy the Helm stack in `part4-observability` using the provided `values.yaml`.
+## Repository structure
 
----
+| Phase | Directory | Purpose |
+| --- | --- | --- |
+| 01 | `part1-terraform-infrastructure` | Provision the VPC, subnet, routing, Security Group, and EC2 node |
+| 02 | `part2-bootstrap` | Install containerd and bootstrap the Kubernetes control plane |
+| 03 | `part3-networking` | Deploy workloads and enforce cross-namespace isolation |
+| 04 | `part4-observability` | Deploy Prometheus, Grafana, Alertmanager, and custom alerts |
 
-## 📈 Observability & Alerting
-Phase 4 implements a custom PrometheusRule (**NodeHighCPUUsage**) that triggers a critical alert when CPU utilization exceeds 50% for over 1 minute.
+## Quick start
 
-* **Grafana Dashboard:** Exposed via NodePort `32000` (restricted to authorized IP).
-* **Alertmanager:** Exposed via NodePort `32001` (restricted to authorized IP).
----
+### 1. Provision AWS infrastructure
 
-## 📋 Verification
-### **Grafana Alert Status:**
+```bash
+cd part1-terraform-infrastructure
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your administrator CIDR and existing EC2 key-pair name.
 
-![Grafana Alert Firing](part4-observability/images/grafana-CPU-alert.png)
+terraform init
+terraform fmt -check -recursive
+terraform validate
+terraform plan
+terraform apply
+```
 
-### **Alertmanager Routing:**
+### 2. Bootstrap Kubernetes
 
-![Alertmanager UI](part4-observability/images/Altermanager-main.png)
+Copy `part2-bootstrap/bootstrap-k8s.sh` to the EC2 node and run:
 
----
+```bash
+sudo chmod +x bootstrap-k8s.sh
+sudo ./bootstrap-k8s.sh
+```
 
-> **Note:** Each directory contains a dedicated README file with detailed instructions, execution commands, and verification outputs.
+### 3. Apply workload isolation
+
+```bash
+kubectl apply -f part3-networking/app1.yaml
+kubectl apply -f part3-networking/app2.yaml
+```
+
+### 4. Deploy observability
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm upgrade --install kube-prometheus-stack prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace \
+  --values part4-observability/values.yaml
+```
+
+## Security design
+
+- SSH, Grafana, and Alertmanager are reachable only from the administrator CIDR configured in Terraform.
+- No credentials, account-specific IAM dependencies, Terraform state, or environment-specific values are committed.
+- NetworkPolicies allow same-namespace ingress while blocking cross-namespace ingress by default.
+- EC2 Instance Metadata Service requires IMDSv2 tokens.
+- The root EBS volume is encrypted and deleted with the instance.
+
+## Validation
+
+The workflow in `.github/workflows/validate.yml` checks:
+
+- Terraform formatting and validation
+- Shell syntax and ShellCheck results for the bootstrap script
+- YAML syntax for Kubernetes and Helm values files
+
+Runtime evidence, including Grafana and Alertmanager screenshots, is available under `part4-observability/images/`.
+
+## Production considerations
+
+A production deployment should use a managed or multi-node control plane, private subnets, load balancers or an ingress layer, managed state storage, centralized secrets management, backups, and multi-AZ worker capacity.
+
+## Cleanup
+
+```bash
+helm uninstall kube-prometheus-stack --namespace monitoring
+kubectl delete -f part3-networking/app1.yaml
+kubectl delete -f part3-networking/app2.yaml
+
+cd part1-terraform-infrastructure
+terraform destroy
+```
