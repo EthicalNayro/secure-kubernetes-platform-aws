@@ -44,6 +44,10 @@ Grafana:      http://<EC2_PUBLIC_IP>:32000
 Alertmanager: http://<EC2_PUBLIC_IP>:32001
 ```
 
+### Grafana access
+
+![Grafana dashboard access through the restricted NodePort](images/grafana-access.png)
+
 ## Trigger and verify the alert
 
 Generate temporary CPU load on the EC2 node:
@@ -53,15 +57,24 @@ yes > /dev/null &
 yes > /dev/null &
 ```
 
+![CPU load generated on the Kubernetes node](images/top-applying-stress.png)
+
 After the alert is observed in Grafana and Alertmanager, stop the test processes:
 
 ```bash
 pkill yes
 ```
 
-## Evidence
+## Alert lifecycle evidence
 
-- `images/grafana-access.png` — restricted Grafana access
-- `images/grafana-CPU-alert.png` — custom alert in the firing state
-- `images/Altermanager-main.png` — alert routed to Alertmanager
-- `images/grafana-CPU-fixed.png` — alert recovery after the load is removed
+### CPU alert firing
+
+![NodeHighCPUUsage alert firing in Grafana](images/grafana-CPU-alert.png)
+
+### Alert routed to Alertmanager
+
+![NodeHighCPUUsage alert visible in Alertmanager](images/Altermanager-main.png)
+
+### Alert recovery
+
+![NodeHighCPUUsage alert recovered after CPU load was removed](images/grafana-CPU-fixed.png)
