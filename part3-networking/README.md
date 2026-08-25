@@ -11,10 +11,18 @@ kubectl apply -f app2.yaml
 
 Each application includes a Namespace, ServiceAccount, ConfigMap, Deployment, Service, resource requests and limits, a readiness probe, and an ingress NetworkPolicy.
 
+The NGINX image intentionally contains only the application runtime, so the checks use a temporary dedicated curl pod.
+
 ## Validate same-namespace traffic
 
 ```bash
-kubectl exec -n app1 deploy/app1-nginx -- curl -s http://app1-svc
+kubectl run curl-test -n app1 \
+  --image=curlimages/curl:8.10.1 \
+  --restart=Never --command -- sleep 300
+
+kubectl wait -n app1 --for=condition=Ready pod/curl-test --timeout=60s
+kubectl exec -n app1 curl-test -- curl -s http://app1-svc
+kubectl delete pod curl-test -n app1
 ```
 
 Expected response:
@@ -26,8 +34,14 @@ Expected response:
 ## Validate cross-namespace isolation
 
 ```bash
-kubectl exec -n app2 deploy/app2-nginx -- \
-  curl -s --max-time 5 http://app1-svc.app1.svc.cluster.local
+kubectl run curl-test -n app2 \
+  --image=curlimages/curl:8.10.1 \
+  --restart=Never --command -- sleep 300
+
+kubectl wait -n app2 --for=condition=Ready pod/curl-test --timeout=60s
+kubectl exec -n app2 curl-test -- \
+  curl -sS --max-time 5 http://app1-svc.app1.svc.cluster.local
+kubectl delete pod curl-test -n app2
 ```
 
 Expected result:
