@@ -1,66 +1,45 @@
-# Part 3: Namespaces, Workloads, and Network Policies
+# Part 3: Namespace Isolation with Kubernetes NetworkPolicies
 
-This component deploys two isolated applications (`app1` and `app2`) in separate Kubernetes namespaces and enforces network isolation using Kubernetes NetworkPolicies.
+This phase deploys two NGINX applications in separate namespaces and uses Calico-enforced NetworkPolicies to allow same-namespace ingress while blocking cross-namespace ingress.
 
-## Deployment
-
-Deploy the applications:
+## Deploy
 
 ```bash
 kubectl apply -f app1.yaml
 kubectl apply -f app2.yaml
 ```
 
----
+Each application includes a Namespace, ServiceAccount, ConfigMap, Deployment, Service, resource requests and limits, a readiness probe, and an ingress NetworkPolicy.
 
-## Validation
-
-### Same-Namespace Traffic (Allowed ✅)
-
-Testing communication inside the same namespace:
+## Validate same-namespace traffic
 
 ```bash
 kubectl exec -n app1 deploy/app1-nginx -- curl -s http://app1-svc
 ```
 
-Expected output:
+Expected response:
 
 ```html
 <h1>Hello from APP1</h1>
 ```
 
-Result: Communication within the namespace is allowed.
-
----
-
-### Cross-Namespace Traffic (Blocked ❌)
-
-Testing communication between different namespaces:
+## Validate cross-namespace isolation
 
 ```bash
-kubectl exec -n app2 deploy/app2-nginx -- curl -s --max-time 5 [http://app1-svc.app1.svc.cluster.local](http://app1-svc.app1.svc.cluster.local)
+kubectl exec -n app2 deploy/app2-nginx -- \
+  curl -s --max-time 5 http://app1-svc.app1.svc.cluster.local
 ```
 
-Expected output:
+Expected result:
 
 ```text
-curl: (28) Connection timed out after 5001 milliseconds
+curl: (28) Connection timed out after 5000 milliseconds
 ```
 
-Result: Cross-namespace communication is blocked.
+## Policy behavior
 
----
+- Pods can receive ingress traffic from pods in the same namespace.
+- Ingress traffic originating in another namespace is denied.
+- Egress is not restricted by these policies.
 
-## NetworkPolicy Logic
-
-Each namespace uses an Ingress NetworkPolicy with a default-deny posture.
-
-Allowed:
-
-* Traffic from pods inside the same namespace.
-
-Blocked:
-
-* Traffic originating from other namespaces.
-
-This ensures workload isolation between `app1` and `app2`.
+This proves the isolation behavior directly instead of relying only on manifest inspection.

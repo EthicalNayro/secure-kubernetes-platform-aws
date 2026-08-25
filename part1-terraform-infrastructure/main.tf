@@ -13,21 +13,11 @@ module "security_group" {
   my_ip  = var.my_ip
 }
 
-
-module "iam" {
-  source = "./modules/iam"
-
-  role_name = var.role_name
-}
-
 module "ec2" {
   source = "./modules/ec2"
 
-  subnet_id = module.vpc.public_subnet_id
-
+  subnet_id         = module.vpc.public_subnet_id
   security_group_id = module.security_group.security_group_id
-
-  instance_profile_name = var.instance_profile_name
-
-  instance_type = var.instance_type
+  instance_type     = var.instance_type
+  key_name          = var.key_name
 }
